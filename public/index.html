@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>La Pirámide de Cefa & La Seta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- PANTALLA PRINCIPAL: BIFURCACIÓN -->
+    <div id="main-menu" class="screen active">
+        <h1>CEFA PARTY APP</h1>
+        <div class="menu-buttons">
+            <button onclick="showScreen('piramide-login')" class="btn-piramide">👁️ LA PIRÁMIDE (Multijugador)</button>
+            <button onclick="iniciarSeta()" class="btn-seta">🍄 LA SETA (1 Móvil)</button>
+        </div>
+    </div>
+
+    <!-- MODO: LA SETA EXPRESS -->
+    <div id="seta-screen" class="screen">
+        <div class="seta-header">
+            <h2>🍄 LA SETA</h2>
+            <p id="seta-counter">Cartas restantes: 41</p>
+        </div>
+        <div class="seta-board">
+            <div id="seta-deck" onclick="sacarCartaSeta()">
+                <div class="card-back">TAP PARA ROBAR</div>
+            </div>
+            <div id="seta-chivato" class="chivato hidden">
+                <h3 id="seta-card-title"></h3>
+                <p id="seta-card-rule"></p>
+            </div>
+        </div>
+        <button id="btn-next-seta" class="btn-next hidden" onclick="prepararSiguienteSeta()">Siguiente Carta</button>
+        <button onclick="showScreen('main-menu')" class="btn-back" style="margin-top:20px;">Salir</button>
+    </div>
+
+    <!-- LOBBY: LA PIRÁMIDE -->
+    <div id="piramide-login" class="screen">
+        <h2>👁️ ENTRAR A LA PIRÁMIDE</h2>
+        <input type="text" id="username" placeholder="Tu Apodo (Ej: Pablitou)">
+        <input type="text" id="roomCode" placeholder="Código de Sala (Ej: FIESTA)">
+        <button id="btn-join" onclick="joinPiramide()" class="btn-piramide">Entrar a la Sala</button>
+        <p id="login-error" style="color: #ff2e2e; margin-top: 10px;"></p>
+        <button onclick="showScreen('main-menu')" class="btn-back">Volver</button>
+    </div>
+
+    <!-- JUEGO: LA PIRÁMIDE -->
+    <div id="piramide-game" class="screen">
+        <div id="reglas-activas-banner">
+            <span id="cefa-avatar">👁️</span> Reglas Activas: Ninguna
+        </div>
+        
+        <!-- Notificaciones globales (ej: Reasignación de host) -->
+        <div id="server-notification" class="hidden"></div>
+
+        <!-- Centro: Pirámide y Rivales -->
+        <div class="piramide-center">
+            <h3>Sala: <span id="display-room"></span></h3>
+            <div id="players-list" class="players-scroll"></div>
+            
+            <div id="mesa-central">
+                <h3>Esperando al Máster para empezar...</h3>
+            </div>
+        </div>
+
+        <!-- Botón Menú de Pausa -->
+        <button id="btn-pause-menu" onclick="togglePauseMenu()">⏸️ Minijuegos</button>
+
+        <!-- Mano Inferior (Fija) -->
+        <div class="hand-container">
+            <div class="hand-header">Tu Inventario (<span id="mis-tragos">0</span> Tragos consumidos)</div>
+            <div id="my-cards" class="cards-row">
+                <!-- Cartas se inyectarán aquí -->
+            </div>
+        </div>
+
+        <!-- Botón Flotante del Máster -->
+        <div id="master-btn" class="hidden" onclick="toggleMasterPanel()">👑</div>
+        
+        <!-- Panel del Máster (Sin castigo divino) -->
+        <div id="master-panel" class="hidden">
+            <h4>Panel del Máster</h4>
+            <button onclick="masterNextPhase()" id="btn-master-action">Siguiente Fase</button>
+            <button onclick="undoAction()" class="btn-danger">Deshacer Última</button>
+        </div>
+    </div>
+
+    <!-- MENÚ DE PAUSA / MINIJUEGOS (Capa Z-Index 200) -->
+    <div id="pause-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>🕹️ MENÚ DE APUESTAS</h2>
+            <p>Elige un minijuego para apostar tragos con otro jugador.</p>
+            <button class="btn-minigame" onclick="launchMinigame('coinflip')">🪙 Coinflip de la Muerte</button>
+            <button class="btn-minigame" onclick="alert('En desarrollo: Piedra, Papel o Tijera')">✂️ Piedra, Papel o Tijera</button>
+            <button class="btn-minigame" onclick="alert('En desarrollo: Duelo de Reflejos')">🔫 Duelo de Reflejos</button>
+            <button class="btn-back" onclick="togglePauseMenu()">Volver al Juego</button>
+        </div>
+    </div>
+
+    <!-- RESULTADO MINIJUEGO -->
+    <div id="result-modal" class="modal hidden">
+        <div class="modal-content" style="border: 4px solid #43d8c9;">
+            <h2 id="result-title">RESULTADO</h2>
+            <h1 id="result-winner" style="color: gold;"></h1>
+            <p id="result-loser" style="font-size: 1.2rem; color: #ff2e2e;"></p>
+            <button class="btn-piramide" onclick="closeResultModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+/* BLOQUEO DE ZOOM MÓVIL Y SELECCIÓN */
+body { background: #1a1a2e; color: white; overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+
+.screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; }
+.screen.active { display: flex; }
+
+h1, h2 { text-align: center; margin-bottom: 20px; text-transform: uppercase; }
+
+/* Menú y Botones */
+.menu-buttons { display: flex; flex-direction: column; gap: 15px; width: 80%; max-width: 300px; }
+button { padding: 15px; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: transform 0.1s; }
+button:active { transform: scale(0.95); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-piramide { background: #e94560; color: white; }
+.btn-seta { background: #0f3460; color: white; border: 2px solid #43d8c9; }
+.btn-back { background: #333; color: white; margin-top: 10px; }
+.btn-danger { background: #ff2e2e; color: white; }
+.btn-minigame { background: #1f4068; color: white; border: 1px solid #43d8c9; width: 100%; margin-bottom: 10px; }
+
+input { padding: 12px; margin-bottom: 15px; width: 80%; max-width: 300px; border-radius: 8px; border: none; text-align: center; font-size: 1.1rem; }
+
+/* Notificaciones Servidor */
+#server-notification { background: #ffbc00; color: black; font-weight: bold; width: 100%; text-align: center; padding: 5px; z-index: 50; }
+
+/* Modo Seta */
+.seta-board { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+#seta-deck { width: 200px; height: 300px; perspective: 1000px; cursor: pointer; }
+.card-back, .card-front { width: 100%; height: 100%; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; text-align: center; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.card-back { background: repeating-linear-gradient(45deg, #0f3460, #0f3460 10px, #1a1a2e 10px, #1a1a2e 20px); border: 4px solid white; }
+.card-front { background: white; color: black; border: 4px solid #e94560; animation: flipIn 0.4s ease-out; }
+.card-seta-boom { background: red; color: white; border: 6px solid yellow; animation: shake 0.5s infinite; }
+
+.chivato { margin-top: 30px; background: rgba(0,0,0,0.8); padding: 20px; border-radius: 12px; width: 90%; text-align: center; border: 2px solid #e94560; }
+.hidden { display: none !important; }
+
+/* Modo Pirámide (Mobile Layout) */
+#reglas-activas-banner { background: #e94560; width: 100%; padding: 8px; text-align: center; font-size: 0.9rem; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 10px; }
+.piramide-center { flex: 1; width: 100%; overflow-y: auto; padding: 20px; text-align: center; }
+.players-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px; scrollbar-width: none; }
+.player-tag { background: #0f3460; padding: 8px 15px; border-radius: 20px; white-space: nowrap; border: 1px solid #43d8c9; font-weight: bold; }
+
+/* Mano Inferior Fija */
+.hand-container { width: 100%; height: 160px; background: #111; border-top: 3px solid #e94560; display: flex; flex-direction: column; z-index: 10; }
+.hand-header { text-align: center; padding: 8px; font-weight: bold; background: #000; font-size: 0.9rem; }
+.cards-row { display: flex; gap: 15px; padding: 10px 20px; overflow-x: auto; height: 100%; align-items: center; justify-content: flex-start; scrollbar-width: none; }
+.mini-card { min-width: 70px; height: 100px; background: white; color: black; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.5rem; border: 2px solid #333; }
+
+/* Botones flotantes */
+#btn-pause-menu { position: absolute; top: 60px; left: 10px; background: rgba(0,0,0,0.7); border: 1px solid white; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; z-index: 100; }
+#master-btn { position: absolute; bottom: 180px; right: 20px; width: 55px; height: 55px; background: gold; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; box-shadow: 0 0 15px gold; cursor: pointer; z-index: 100; }
+#master-panel { position: absolute; bottom: 250px; right: 20px; background: rgba(0,0,0,0.95); border: 2px solid gold; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; gap: 10px; z-index: 100; width: 200px; }
+
+/* Modales Z-Index Superior */
+.modal { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal-content { background: #1a1a2e; padding: 30px; border-radius: 15px; text-align: center; border: 2px solid #e94560; width: 100%; max-width: 400px; }
+
+/* Animaciones */
+@keyframes flipIn { from { transform: rotateY(90deg); opacity: 0; } to { transform: rotateY(0deg); opacity: 1; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
